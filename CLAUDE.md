@@ -23,4 +23,5 @@ Estoy aprendiendo desarrollo web (HTML, CSS, JS básico) y construyo un triki
 ## Progreso
 - [x] Paso 1 — Estructura HTML (commit 4816f98)
 - [x] Paso 2 — Estilos CSS
-- [ ] Paso 3 — Lógica básica JS (turnos, poner fichas)
+- [x] Paso 3 — Lógica básica JS (turnos, poner fichas)
+- [ ] Paso 4 — Detectar ganador/empate y resaltar casillas ganadoras
