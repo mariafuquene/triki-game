@@ -21,4 +21,6 @@ Estoy aprendiendo desarrollo web (HTML, CSS, JS básico) y construyo un triki
 6. Temáticas (cambiar fichas sin borrar contadores).
 
 ## Progreso
-- [ ] Paso 1 — Estructura HTML
+- [x] Paso 1 — Estructura HTML (commit 4816f98)
+- [x] Paso 2 — Estilos CSS
+- [ ] Paso 3 — Lógica básica JS (turnos, poner fichas)

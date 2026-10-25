@@ -1,0 +1,205 @@
+/* ===== Variables de color ===== */
+:root {
+  --fondo: #fff8f0;
+  --tarjeta: #ffffff;
+  --texto: #3d3d5c;
+  --suave: #8a8aa8;
+  --jugador-1: #ff6b8b;   /* rosado */
+  --jugador-2: #4dabf7;   /* azul */
+  --acento: #ffd43b;      /* amarillo */
+  --ganadora: #b2f2bb;    /* verde claro */
+  --borde: #ffe3d1;
+  --radio: 16px;
+  --sombra: 0 4px 14px rgba(61, 61, 92, 0.08);
+}
+
+/* ===== Base ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: var(--fondo);
+  color: var(--texto);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 16px;
+}
+
+.juego {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+h1 {
+  font-size: 2.6rem;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, var(--jugador-1), var(--jugador-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ===== Selector de temática ===== */
+.tematica {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tematica select {
+  font: inherit;
+  padding: 6px 12px;
+  border: 2px solid var(--borde);
+  border-radius: 999px;
+  background: var(--tarjeta);
+  color: var(--texto);
+  cursor: pointer;
+}
+
+/* ===== Jugadores ===== */
+.jugadores {
+  width: 100%;
+  display: flex;
+  gap: 12px;
+}
+
+.jugador {
+  flex: 1;
+  background: var(--tarjeta);
+  border: 3px solid transparent;
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 12px;
+  text-align: center;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.jugador .ficha {
+  font-size: 2rem;
+}
+
+.jugador h2 {
+  font-size: 1.1rem;
+  margin: 4px 0;
+}
+
+#jugador-1 h2 { color: var(--jugador-1); }
+#jugador-2 h2 { color: var(--jugador-2); }
+
+.jugador p {
+  font-size: 0.9rem;
+  color: var(--suave);
+}
+
+/* El jugador que tiene el turno se resalta */
+#jugador-1.activo { border-color: var(--jugador-1); transform: scale(1.04); }
+#jugador-2.activo { border-color: var(--jugador-2); transform: scale(1.04); }
+
+/* ===== Mensaje de estado ===== */
+.estado {
+  font-size: 1.15rem;
+  font-weight: 600;
+  min-height: 1.5em;
+}
+
+/* ===== Tablero ===== */
+.tablero {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: min(100%, 330px);
+}
+
+.casilla {
+  aspect-ratio: 1 / 1;
+  font-size: 2.8rem;
+  background: var(--tarjeta);
+  border: none;
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  cursor: pointer;
+  transition: transform 0.15s, background-color 0.2s;
+}
+
+/* Animación al pasar el mouse (solo casillas vacías) */
+.casilla:not(.ocupada):hover {
+  transform: translateY(-3px);
+  background: #fff3e6;
+}
+
+.casilla.ocupada {
+  cursor: default;
+  animation: aparecer 0.3s ease-out;
+}
+
+/* Las 3 casillas ganadoras */
+.casilla.ganadora {
+  background: var(--ganadora);
+  animation: latido 0.6s ease-in-out 2;
+}
+
+@keyframes aparecer {
+  from { transform: scale(0.3); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+@keyframes latido {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.08); }
+}
+
+/* ===== Contadores ===== */
+.contadores {
+  display: flex;
+  gap: 24px;
+  color: var(--suave);
+}
+
+.contadores span {
+  font-weight: 700;
+  color: var(--texto);
+}
+
+/* ===== Botones ===== */
+.botones {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.botones button {
+  font: inherit;
+  font-weight: 600;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.15s, filter 0.15s;
+}
+
+#btn-nueva-ronda {
+  background: var(--acento);
+  color: var(--texto);
+}
+
+#btn-reiniciar {
+  background: var(--tarjeta);
+  color: var(--texto);
+  border: 2px solid var(--borde);
+}
+
+.botones button:hover {
+  transform: translateY(-2px);
+  filter: brightness(0.96);
+}
