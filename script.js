@@ -11,6 +11,11 @@ let turno = 1;
 // Se vuelve true cuando alguien gana o hay empate
 let juegoTerminado = false;
 
+// Marcador: rondas ganadas por cada usuario, empates y total de juegos
+let victorias = { 1: 0, 2: 0 };
+let empates = 0;
+let totalJuegos = 0;
+
 // Las 8 formas de hacer 3 en línea (posiciones del tablero)
 const combinacionesGanadoras = [
   [0, 1, 2], [3, 4, 5], [6, 7, 8], // filas
@@ -24,6 +29,12 @@ const estado = document.getElementById('estado');
 const jugador1 = document.getElementById('jugador-1');
 const jugador2 = document.getElementById('jugador-2');
 const tableroHTML = document.getElementById('tablero');
+const victorias1HTML = document.getElementById('victorias-1');
+const victorias2HTML = document.getElementById('victorias-2');
+const empatesHTML = document.getElementById('empates');
+const totalJuegosHTML = document.getElementById('total-juegos');
+const btnNuevaRonda = document.getElementById('btn-nueva-ronda');
+const btnReiniciar = document.getElementById('btn-reiniciar');
 
 // ===== Funciones =====
 
@@ -32,6 +43,14 @@ function actualizarTurno() {
   estado.textContent = `Turno de Usuario ${turno}`;
   jugador1.classList.toggle('activo', turno === 1);
   jugador2.classList.toggle('activo', turno === 2);
+}
+
+// Copia los números del marcador a la pantalla
+function actualizarMarcador() {
+  victorias1HTML.textContent = victorias[1];
+  victorias2HTML.textContent = victorias[2];
+  empatesHTML.textContent = empates;
+  totalJuegosHTML.textContent = totalJuegos;
 }
 
 // Devuelve la combinación ganadora (ej. [0, 4, 8]) o null si nadie ha ganado
@@ -45,12 +64,14 @@ function buscarGanador() {
   return null;
 }
 
-// Termina la ronda: bloquea el tablero y quita el resaltado de turno
+// Termina la ronda: bloquea el tablero, quita el resaltado de turno y actualiza el marcador
 function terminarJuego() {
   juegoTerminado = true;
   tableroHTML.classList.add('terminado');
   jugador1.classList.remove('activo');
   jugador2.classList.remove('activo');
+  totalJuegos++;
+  actualizarMarcador();
 }
 
 // Se ejecuta cada vez que se hace clic en una casilla
@@ -75,6 +96,7 @@ function jugar(evento) {
       casillas[i].classList.add('ganadora');
     });
     estado.textContent = `¡Ganó Usuario ${turno}! 🎉`;
+    victorias[turno]++;
     terminarJuego();
     return;
   }
@@ -82,6 +104,7 @@ function jugar(evento) {
   // ¿Se llenó el tablero sin ganador?
   if (!tablero.includes(null)) {
     estado.textContent = '¡Empate! 🤝';
+    empates++;
     terminarJuego();
     return;
   }
@@ -91,9 +114,36 @@ function jugar(evento) {
   actualizarTurno();
 }
 
+// Limpia el tablero para jugar otra ronda (el marcador se conserva)
+function nuevaRonda() {
+  tablero = [null, null, null, null, null, null, null, null, null];
+  turno = 1;
+  juegoTerminado = false;
+  tableroHTML.classList.remove('terminado');
+
+  casillas.forEach(function (casilla) {
+    casilla.textContent = '';
+    casilla.classList.remove('ocupada', 'ganadora');
+  });
+
+  actualizarTurno();
+}
+
+// Pone todo el marcador en cero y empieza una ronda nueva
+function reiniciarMarcador() {
+  victorias = { 1: 0, 2: 0 };
+  empates = 0;
+  totalJuegos = 0;
+  actualizarMarcador();
+  nuevaRonda();
+}
+
 // ===== Inicio =====
 casillas.forEach(function (casilla) {
   casilla.addEventListener('click', jugar);
 });
+
+btnNuevaRonda.addEventListener('click', nuevaRonda);
+btnReiniciar.addEventListener('click', reiniciarMarcador);
 
 actualizarTurno();

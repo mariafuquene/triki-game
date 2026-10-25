@@ -26,4 +26,5 @@ Estoy aprendiendo desarrollo web (HTML, CSS, JS básico) y construyo un triki
 - [x] Paso 2 — Estilos CSS
 - [x] Paso 3 — Lógica básica JS (turnos, poner fichas)
 - [x] Paso 4 — Detectar ganador/empate y resaltar casillas ganadoras + estilo gamer
-- [ ] Paso 5 — Contadores y botones (Nueva ronda / Reiniciar marcador)
+- [x] Paso 5 — Contadores y botones (Nueva ronda / Reiniciar marcador)
+- [ ] Paso 6 — Temáticas + fichas como imágenes 3D
