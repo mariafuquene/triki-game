@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triki</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="juego">
+    <h1>Triki</h1>
+
+    <!-- Selector de temática -->
+    <section class="tematica">
+      <label for="selector-tematica">Temática:</label>
+      <select id="selector-tematica">
+        <option value="clasico">Clásico ❌/⭕</option>
+        <option value="mascotas">Mascotas 🐱/🐶</option>
+        <option value="vehiculos">Vehículos 🚗/🏍️</option>
+        <option value="dianoche">Día y noche ☀️/🌙</option>
+        <option value="deportes">Deportes ⚽/🏀</option>
+      </select>
+    </section>
+
+    <!-- Jugadores con su ficha y sus rondas ganadas -->
+    <section class="jugadores">
+      <div class="jugador" id="jugador-1">
+        <span class="ficha" id="ficha-1">❌</span>
+        <h2>Usuario 1</h2>
+        <p>Rondas ganadas: <span id="victorias-1">0</span></p>
+      </div>
+
+      <div class="jugador" id="jugador-2">
+        <span class="ficha" id="ficha-2">⭕</span>
+        <h2>Usuario 2</h2>
+        <p>Rondas ganadas: <span id="victorias-2">0</span></p>
+      </div>
+    </section>
+
+    <!-- Mensaje de estado: de quién es el turno, quién ganó, etc. -->
+    <p class="estado" id="estado">Turno de Usuario 1</p>
+
+    <!-- Tablero de 3x3: nueve casillas -->
+    <section class="tablero" id="tablero">
+      <button class="casilla" data-indice="0"></button>
+      <button class="casilla" data-indice="1"></button>
+      <button class="casilla" data-indice="2"></button>
+      <button class="casilla" data-indice="3"></button>
+      <button class="casilla" data-indice="4"></button>
+      <button class="casilla" data-indice="5"></button>
+      <button class="casilla" data-indice="6"></button>
+      <button class="casilla" data-indice="7"></button>
+      <button class="casilla" data-indice="8"></button>
+    </section>
+
+    <!-- Contadores generales -->
+    <section class="contadores">
+      <p>Empates: <span id="empates">0</span></p>
+      <p>Total de juegos: <span id="total-juegos">0</span></p>
+    </section>
+
+    <!-- Botones de control -->
+    <section class="botones">
+      <button id="btn-nueva-ronda">Nueva ronda</button>
+      <button id="btn-reiniciar">Reiniciar marcador</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

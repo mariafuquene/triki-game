@@ -1,0 +1,24 @@
+# Instrucciones para Claude
+
+Estoy aprendiendo desarrollo web (HTML, CSS, JS básico) y construyo un triki
+**paso a paso** para aprender. Los requisitos del juego están en `REQUISITOS.md`.
+
+## Reglas para ayudarme
+- Vamos **un paso a la vez** y espera mi confirmación antes de avanzar.
+- Explícame cada parte del código y por qué se hace así.
+- Cada vez que me des un comando de terminal, explícame para qué sirve y qué hace cada parte.
+- Al terminar cada paso, hacemos `git add`, `commit` y `push`, explicándome cada uno.
+- Usa HTML, CSS y JavaScript puro (sin React ni librerías), en 3 archivos separados:
+  `index.html`, `styles.css`, `script.js`.
+- Responde en español.
+
+## Plan de pasos
+1. Estructura en `index.html`.
+2. Estilos en `styles.css` (diseño, colores, animaciones).
+3. Lógica básica en `script.js` (turnos, poner fichas).
+4. Detectar ganador/empate y resaltar casillas ganadoras.
+5. Contadores y botones (Nueva ronda / Reiniciar marcador).
+6. Temáticas (cambiar fichas sin borrar contadores).
+
+## Progreso
+- [ ] Paso 1 — Estructura HTML
