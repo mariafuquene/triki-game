@@ -18,10 +18,12 @@ Estoy aprendiendo desarrollo web (HTML, CSS, JS básico) y construyo un triki
 3. Lógica básica en `script.js` (turnos, poner fichas).
 4. Detectar ganador/empate y resaltar casillas ganadoras.
 5. Contadores y botones (Nueva ronda / Reiniciar marcador).
-6. Temáticas (cambiar fichas sin borrar contadores).
+6. Temáticas (cambiar fichas sin borrar contadores) + fichas como imágenes 3D
+   (Fluent Emoji 3D) en `img/`.
 
 ## Progreso
 - [x] Paso 1 — Estructura HTML (commit 4816f98)
 - [x] Paso 2 — Estilos CSS
 - [x] Paso 3 — Lógica básica JS (turnos, poner fichas)
-- [ ] Paso 4 — Detectar ganador/empate y resaltar casillas ganadoras
+- [x] Paso 4 — Detectar ganador/empate y resaltar casillas ganadoras + estilo gamer
+- [ ] Paso 5 — Contadores y botones (Nueva ronda / Reiniciar marcador)

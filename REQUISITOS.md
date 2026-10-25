@@ -6,7 +6,11 @@
 
 ## Diseño
 - Limpio y minimalista, con colores alegres.
+- Estilo "gamer": fondo con degradado animado rosado → morado → azul (los colores
+  del título), panel de vidrio oscuro y brillos de neón.
 - Animaciones sutiles al poner una ficha y al pasar el mouse por las casillas.
+- Fichas como **imágenes 3D** (Fluent Emoji 3D de Microsoft, licencia MIT) guardadas
+  en la carpeta `img/`, en lugar de emojis de texto. Se implementa en el Paso 6.
 
 ## Jugadores y temáticas
 - Dos jugadores: **Usuario 1** y **Usuario 2**.

@@ -1,16 +1,16 @@
 /* ===== Variables de color ===== */
 :root {
-  --fondo: #fff8f0;
-  --tarjeta: #ffffff;
-  --texto: #3d3d5c;
-  --suave: #8a8aa8;
   --jugador-1: #ff6b8b;   /* rosado */
   --jugador-2: #4dabf7;   /* azul */
+  --morado: #9b5de5;      /* mezcla de los dos, para el degradado */
   --acento: #ffd43b;      /* amarillo */
-  --ganadora: #b2f2bb;    /* verde claro */
-  --borde: #ffe3d1;
+  --ganadora: #51cf66;    /* verde */
+  --texto: #ffffff;
+  --suave: rgba(255, 255, 255, 0.7);
+  --panel: rgba(22, 16, 48, 0.65);      /* vidrio oscuro */
+  --casilla: rgba(255, 255, 255, 0.08);
+  --borde: rgba(255, 255, 255, 0.18);
   --radio: 16px;
-  --sombra: 0 4px 14px rgba(61, 61, 92, 0.08);
 }
 
 /* ===== Base ===== */
@@ -22,31 +22,55 @@
 
 body {
   font-family: "Segoe UI", system-ui, sans-serif;
-  background: var(--fondo);
   color: var(--texto);
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 24px 16px;
+
+  /* Fondo: cuadrícula sutil encima de un degradado rosado → morado → azul */
+  background-color: #1a1033;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(135deg, var(--jugador-1), var(--morado), var(--jugador-2), var(--morado), var(--jugador-1));
+  background-size: 40px 40px, 40px 40px, 400% 400%;
+  animation: fondo-movil 16s ease-in-out infinite;
 }
 
+/* El degradado se desplaza lentamente (la cuadrícula se queda quieta) */
+@keyframes fondo-movil {
+  0%, 100% { background-position: 0 0, 0 0, 0% 50%; }
+  50%      { background-position: 0 0, 0 0, 100% 50%; }
+}
+
+/* Panel central de vidrio oscuro */
 .juego {
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  padding: 28px 20px;
+  background: var(--panel);
+  border: 2px solid var(--borde);
+  border-radius: 24px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 40px rgba(155, 93, 229, 0.45);
 }
 
+/* Título con brillo de neón */
 h1 {
-  font-size: 2.6rem;
-  letter-spacing: 2px;
-  background: linear-gradient(90deg, var(--jugador-1), var(--jugador-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 8px var(--jugador-1),
+    0 0 20px var(--morado),
+    0 0 36px var(--jugador-2);
 }
 
 /* ===== Selector de temática ===== */
@@ -61,9 +85,14 @@ h1 {
   padding: 6px 12px;
   border: 2px solid var(--borde);
   border-radius: 999px;
-  background: var(--tarjeta);
+  background: var(--casilla);
   color: var(--texto);
   cursor: pointer;
+}
+
+/* Las opciones del menú desplegable se ven sobre fondo oscuro */
+.tematica option {
+  background: #1a1033;
 }
 
 /* ===== Jugadores ===== */
@@ -75,13 +104,12 @@ h1 {
 
 .jugador {
   flex: 1;
-  background: var(--tarjeta);
-  border: 3px solid transparent;
+  background: var(--casilla);
+  border: 2px solid var(--borde);
   border-radius: var(--radio);
-  box-shadow: var(--sombra);
   padding: 12px;
   text-align: center;
-  transition: border-color 0.3s, transform 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
 }
 
 .jugador .ficha {
@@ -101,9 +129,18 @@ h1 {
   color: var(--suave);
 }
 
-/* El jugador que tiene el turno se resalta */
-#jugador-1.activo { border-color: var(--jugador-1); transform: scale(1.04); }
-#jugador-2.activo { border-color: var(--jugador-2); transform: scale(1.04); }
+/* El jugador que tiene el turno brilla con su color */
+#jugador-1.activo {
+  border-color: var(--jugador-1);
+  box-shadow: 0 0 18px var(--jugador-1);
+  transform: scale(1.04);
+}
+
+#jugador-2.activo {
+  border-color: var(--jugador-2);
+  box-shadow: 0 0 18px var(--jugador-2);
+  transform: scale(1.04);
+}
 
 /* ===== Mensaje de estado ===== */
 .estado {
@@ -123,18 +160,24 @@ h1 {
 .casilla {
   aspect-ratio: 1 / 1;
   font-size: 2.8rem;
-  background: var(--tarjeta);
-  border: none;
+  color: var(--texto);
+  background: var(--casilla);
+  border: 2px solid var(--borde);
   border-radius: var(--radio);
-  box-shadow: var(--sombra);
   cursor: pointer;
-  transition: transform 0.15s, background-color 0.2s;
+  transition: transform 0.15s, border-color 0.2s, box-shadow 0.2s;
 }
 
-/* Animación al pasar el mouse (solo casillas vacías) */
-.casilla:not(.ocupada):hover {
+/* Animación al pasar el mouse (solo casillas vacías y si la ronda sigue) */
+.tablero:not(.terminado) .casilla:not(.ocupada):hover {
   transform: translateY(-3px);
-  background: #fff3e6;
+  border-color: var(--acento);
+  box-shadow: 0 0 14px var(--acento);
+}
+
+/* Cuando la ronda termina, ninguna casilla parece clicable */
+.tablero.terminado .casilla {
+  cursor: default;
 }
 
 .casilla.ocupada {
@@ -144,7 +187,9 @@ h1 {
 
 /* Las 3 casillas ganadoras */
 .casilla.ganadora {
-  background: var(--ganadora);
+  background: rgba(81, 207, 102, 0.35);
+  border-color: var(--ganadora);
+  box-shadow: 0 0 20px var(--ganadora);
   animation: latido 0.6s ease-in-out 2;
 }
 
@@ -180,26 +225,31 @@ h1 {
 
 .botones button {
   font: inherit;
-  font-weight: 600;
+  font-weight: 700;
   padding: 10px 20px;
-  border: none;
   border-radius: 999px;
   cursor: pointer;
-  transition: transform 0.15s, filter 0.15s;
+  transition: transform 0.15s, box-shadow 0.15s;
 }
 
 #btn-nueva-ronda {
   background: var(--acento);
-  color: var(--texto);
+  color: #1a1033;
+  border: 2px solid var(--acento);
 }
 
 #btn-reiniciar {
-  background: var(--tarjeta);
+  background: transparent;
   color: var(--texto);
   border: 2px solid var(--borde);
 }
 
 .botones button:hover {
   transform: translateY(-2px);
-  filter: brightness(0.96);
+  box-shadow: 0 0 16px var(--acento);
+}
+
+/* Si la persona pidió menos movimiento en su sistema, el fondo se queda quieto */
+@media (prefers-reduced-motion: reduce) {
+  body { animation: none; }
 }
