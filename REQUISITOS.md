@@ -17,6 +17,16 @@
   - Usuario 1 = piezas de **plata**, Usuario 2 = piezas de **oro**: las tarjetas
     de cada usuario usan su metal como acento.
 
+## Distribución en 3 columnas (boceto en `originales/boceto.png`)
+- **Arriba al centro:** título TRIKI y selector de temática.
+- **Izquierda:** tarjeta de Usuario 1 con sus rondas ganadas debajo.
+- **Centro:** "Turno de...", el tablero y debajo Empates y Total de juegos.
+- **Derecha:** tarjeta de Usuario 2 con sus rondas ganadas debajo.
+- **Abajo al centro:** botones Nueva ronda y Reiniciar marcador.
+- En el computador todo debe caber en la pantalla **sin scroll**.
+- En pantallas pequeñas (celular) se acomoda en **una sola columna**.
+- Se hace con **CSS Grid**.
+
 ## Fichas
 - Las fichas son **imágenes PNG** de la carpeta `img/` (piezas realistas de
   plata/oro grabado con zafiros azules), en lugar de emojis.
@@ -32,6 +42,9 @@
 - **Brillo** en las casillas al pasar el mouse.
 - La ficha **aparece con una animación** al ponerla.
 - **Celebración visual al ganar**: la línea ganadora brilla.
+- **Corona al ganar**: cuando un usuario gana una ronda, aparece una corona
+  dorada (`img/corona.png`, oro con zafiros) sobre su nombre durante 2 a 3
+  segundos, con animación de entrada y de salida.
 
 ## Jugadores y temáticas
 - Dos jugadores: **Usuario 1** y **Usuario 2**.
