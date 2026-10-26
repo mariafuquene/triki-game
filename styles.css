@@ -1,16 +1,19 @@
-/* ===== Variables de color ===== */
+/* ===== Variables: paleta «Terciopelo nocturno» ===== */
 :root {
-  --jugador-1: #ff6b8b;   /* rosado */
-  --jugador-2: #4dabf7;   /* azul */
-  --morado: #9b5de5;      /* mezcla de los dos, para el degradado */
-  --acento: #ffd43b;      /* amarillo */
-  --ganadora: #51cf66;    /* verde */
-  --texto: #ffffff;
-  --suave: rgba(255, 255, 255, 0.7);
-  --panel: rgba(22, 16, 48, 0.65);      /* vidrio oscuro */
-  --casilla: rgba(255, 255, 255, 0.08);
-  --borde: rgba(255, 255, 255, 0.18);
-  --radio: 16px;
+  --terciopelo: #0b1033;      /* azul noche */
+  --terciopelo-oscuro: #05060f;
+  --plata: #c0c6d4;
+  --plata-clara: #eef1f6;
+  --oro: #d4af37;
+  --oro-claro: #f3d77a;
+  --zafiro: #3355ff;
+  --texto: #e8ebf2;
+  --suave: rgba(232, 235, 242, 0.65);
+  --filo: rgba(192, 198, 212, 0.3);   /* borde plateado fino */
+  --radio: 12px;
+
+  --fuente-titulos: "Cinzel", Georgia, serif;
+  --fuente-texto: "Lato", "Segoe UI", sans-serif;
 }
 
 /* ===== Base ===== */
@@ -21,31 +24,25 @@
 }
 
 body {
-  font-family: "Segoe UI", system-ui, sans-serif;
+  font-family: var(--fuente-texto);
   color: var(--texto);
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 24px 16px;
+  padding: 32px 16px;
 
-  /* Fondo: cuadrícula sutil encima de un degradado rosado → morado → azul */
-  background-color: #1a1033;
+  /* Fondo de estuche: una luz azul arriba y un brillo zafiro abajo,
+     sobre un degradado de azul noche a casi negro */
+  background-color: var(--terciopelo-oscuro);
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
-    linear-gradient(135deg, var(--jugador-1), var(--morado), var(--jugador-2), var(--morado), var(--jugador-1));
-  background-size: 40px 40px, 40px 40px, 400% 400%;
-  animation: fondo-movil 16s ease-in-out infinite;
+    radial-gradient(ellipse at 50% 0%, rgba(51, 85, 255, 0.25), transparent 60%),
+    radial-gradient(ellipse at 50% 100%, rgba(51, 85, 255, 0.12), transparent 50%),
+    linear-gradient(180deg, var(--terciopelo), var(--terciopelo-oscuro));
+  background-attachment: fixed;
 }
 
-/* El degradado se desplaza lentamente (la cuadrícula se queda quieta) */
-@keyframes fondo-movil {
-  0%, 100% { background-position: 0 0, 0 0, 0% 50%; }
-  50%      { background-position: 0 0, 0 0, 100% 50%; }
-}
-
-/* Panel central de vidrio oscuro */
+/* Panel central: el "estuche" con doble filo (plata adentro, oro afuera) */
 .juego {
   width: 100%;
   max-width: 440px;
@@ -53,46 +50,71 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  padding: 28px 20px;
-  background: var(--panel);
-  border: 2px solid var(--borde);
-  border-radius: 24px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 40px rgba(155, 93, 229, 0.45);
+  padding: 32px 22px;
+  background: linear-gradient(160deg, rgba(22, 30, 86, 0.9), rgba(6, 8, 26, 0.95));
+  border: 1px solid var(--filo);
+  border-radius: 20px;
+  outline: 1px solid rgba(212, 175, 55, 0.35);
+  outline-offset: 6px;
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.6),             /* sombra que lo separa del fondo */
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);    /* reflejo en el borde de arriba */
 }
 
-/* Título con brillo de neón */
+/* Título: letras de plata pulida */
 h1 {
-  font-size: 2.8rem;
-  font-weight: 900;
-  letter-spacing: 6px;
+  font-family: var(--fuente-titulos);
+  font-size: 2.6rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  padding-left: 0.3em;   /* compensa el espacio que queda después de la última letra */
   text-transform: uppercase;
-  text-shadow:
-    0 0 8px var(--jugador-1),
-    0 0 20px var(--morado),
-    0 0 36px var(--jugador-2);
+
+  /* Truco del texto metálico: un degradado plateado de fondo,
+     recortado con la forma de las letras */
+  background: linear-gradient(180deg, #ffffff 0%, var(--plata) 45%, #7d8596 55%, var(--plata-clara) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Línea dorada debajo del título (adorno) */
+h1::after {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-top: 10px;
+  background: linear-gradient(90deg, transparent, var(--oro), transparent);
 }
 
 /* ===== Selector de temática ===== */
 .tematica {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+}
+
+.tematica label {
+  font-family: var(--fuente-titulos);
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--plata);
 }
 
 .tematica select {
   font: inherit;
-  padding: 6px 12px;
-  border: 2px solid var(--borde);
+  padding: 6px 14px;
+  border: 1px solid var(--filo);
   border-radius: 999px;
-  background: var(--casilla);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--texto);
   cursor: pointer;
 }
 
 /* Las opciones del menú desplegable se ven sobre fondo oscuro */
 .tematica option {
-  background: #1a1033;
+  background: var(--terciopelo);
 }
 
 /* ===== Jugadores ===== */
@@ -102,84 +124,107 @@ h1 {
   gap: 12px;
 }
 
+/* Cada tarjeta guarda "su metal" en variables propias */
+#jugador-1 {
+  --metal: var(--plata);
+  --brillo: rgba(192, 198, 212, 0.45);
+}
+
+#jugador-2 {
+  --metal: var(--oro);
+  --brillo: rgba(212, 175, 55, 0.45);
+}
+
 .jugador {
   flex: 1;
-  background: var(--casilla);
-  border: 2px solid var(--borde);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.25));
+  border: 1px solid var(--filo);
   border-radius: var(--radio);
-  padding: 12px;
+  padding: 14px 10px;
   text-align: center;
   transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
 }
 
-/* Imagen de la ficha en la tarjeta: caja fija de 56x56 y la imagen
-   se ajusta adentro completa, sin deformarse */
+/* Imagen de la ficha en la tarjeta: caja fija de 84x56 (más ancha, para que
+   el carro y la moto no se vean diminutos) y la imagen se ajusta adentro
+   completa, sin deformarse */
 .jugador .ficha {
   display: block;
-  width: 56px;
+  width: 84px;
   height: 56px;
   margin: 0 auto;
   object-fit: contain;
+  filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 0.6));
 }
 
 .jugador h2 {
-  font-size: 1.1rem;
-  margin: 4px 0;
+  font-family: var(--fuente-titulos);
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  color: var(--metal);
+  margin: 6px 0 2px;
 }
 
-#jugador-1 h2 { color: var(--jugador-1); }
-#jugador-2 h2 { color: var(--jugador-2); }
-
 .jugador p {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--suave);
 }
 
-/* El jugador que tiene el turno brilla con su color */
-#jugador-1.activo {
-  border-color: var(--jugador-1);
-  box-shadow: 0 0 18px var(--jugador-1);
-  transform: scale(1.04);
-}
-
-#jugador-2.activo {
-  border-color: var(--jugador-2);
-  box-shadow: 0 0 18px var(--jugador-2);
-  transform: scale(1.04);
+/* El jugador que tiene el turno brilla con su metal */
+.jugador.activo {
+  border-color: var(--metal);
+  box-shadow: 0 0 22px var(--brillo);
+  transform: translateY(-3px);
 }
 
 /* ===== Mensaje de estado ===== */
 .estado {
-  font-size: 1.15rem;
-  font-weight: 600;
+  font-family: var(--fuente-titulos);
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  color: var(--plata-clara);
   min-height: 1.5em;
 }
 
 /* ===== Tablero ===== */
+/* La bandeja del estuche donde van las 9 casillas */
 .tablero {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-  width: min(100%, 330px);
+  width: min(100%, 340px);
+  padding: 12px;
+  background: linear-gradient(145deg, #1b2150, #070914);
+  border: 1px solid var(--filo);
+  border-radius: 18px;
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.6),
+    0 12px 30px rgba(0, 0, 0, 0.5);
 }
 
+/* Cada casilla: terciopelo hundido (las sombras "inset" van hacia adentro) */
 .casilla {
   aspect-ratio: 1 / 1;
   display: grid;          /* grid + place-items centra la imagen */
   place-items: center;
   color: var(--texto);
-  background: var(--casilla);
-  border: 2px solid var(--borde);
+  background: radial-gradient(circle at 50% 35%, #1c2a7a 0%, #0e1440 55%, #070a22 100%);
+  border: 1px solid var(--filo);
   border-radius: var(--radio);
+  box-shadow:
+    inset 0 6px 14px rgba(0, 0, 0, 0.75),       /* hundido: sombra arriba adentro */
+    inset 0 -2px 6px rgba(51, 85, 255, 0.15);   /* reflejo zafiro abajo adentro */
   cursor: pointer;
-  transition: transform 0.15s, border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* Animación al pasar el mouse (solo casillas vacías y si la ronda sigue) */
+/* Al pasar el mouse (solo casillas vacías y si la ronda sigue): filo y halo zafiro */
 .tablero:not(.terminado) .casilla:not(.ocupada):hover {
-  transform: translateY(-3px);
-  border-color: var(--acento);
-  box-shadow: 0 0 14px var(--acento);
+  border-color: var(--plata);
+  box-shadow:
+    inset 0 6px 14px rgba(0, 0, 0, 0.75),
+    inset 0 -2px 6px rgba(51, 85, 255, 0.15),
+    0 0 16px rgba(51, 85, 255, 0.55);
 }
 
 /* Cuando la ronda termina, ninguna casilla parece clicable */
@@ -193,19 +238,23 @@ h1 {
 }
 
 /* Imagen de la ficha en el tablero: ocupa el 80% de la casilla, completa y
-   sin deformarse. pointer-events: none hace que el clic "atraviese" la imagen */
+   sin deformarse. pointer-events: none hace que el clic "atraviese" la imagen.
+   drop-shadow sigue la silueta de la pieza (no un rectángulo) */
 .casilla .ficha {
   width: 80%;
   height: 80%;
   object-fit: contain;
   pointer-events: none;
+  filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.7));
 }
 
-/* Las 3 casillas ganadoras */
+/* Las 3 casillas ganadoras: filo y luz de oro */
 .casilla.ganadora {
-  background: rgba(81, 207, 102, 0.35);
-  border-color: var(--ganadora);
-  box-shadow: 0 0 20px var(--ganadora);
+  background: radial-gradient(circle at 50% 35%, #4a3d14 0%, #1f1a08 60%, #0d0b04 100%);
+  border-color: var(--oro);
+  box-shadow:
+    inset 0 6px 14px rgba(0, 0, 0, 0.6),
+    0 0 22px rgba(212, 175, 55, 0.7);
   animation: latido 0.6s ease-in-out 2;
 }
 
@@ -223,12 +272,14 @@ h1 {
 .contadores {
   display: flex;
   gap: 24px;
+  font-size: 0.9rem;
   color: var(--suave);
 }
 
 .contadores span {
+  font-family: var(--fuente-titulos);
   font-weight: 700;
-  color: var(--texto);
+  color: var(--oro-claro);
 }
 
 /* ===== Botones ===== */
@@ -240,32 +291,39 @@ h1 {
 }
 
 .botones button {
-  font: inherit;
+  font-family: var(--fuente-titulos);
+  font-size: 0.85rem;
   font-weight: 700;
-  padding: 10px 20px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 11px 22px;
   border-radius: 999px;
   cursor: pointer;
   transition: transform 0.15s, box-shadow 0.15s;
 }
 
+/* Botón principal: oro pulido (degradado claro → oscuro, como metal) */
 #btn-nueva-ronda {
-  background: var(--acento);
-  color: #1a1033;
-  border: 2px solid var(--acento);
+  background: linear-gradient(180deg, var(--oro-claro), var(--oro) 50%, #a8842a);
+  color: #1a1405;
+  border: 1px solid var(--oro-claro);
 }
 
+/* Botón secundario: solo un filo de plata */
 #btn-reiniciar {
   background: transparent;
-  color: var(--texto);
-  border: 2px solid var(--borde);
+  color: var(--plata);
+  border: 1px solid var(--plata);
 }
 
 .botones button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 16px var(--acento);
 }
 
-/* Si la persona pidió menos movimiento en su sistema, el fondo se queda quieto */
-@media (prefers-reduced-motion: reduce) {
-  body { animation: none; }
+#btn-nueva-ronda:hover {
+  box-shadow: 0 0 18px rgba(212, 175, 55, 0.6);
+}
+
+#btn-reiniciar:hover {
+  box-shadow: 0 0 18px rgba(192, 198, 212, 0.4);
 }
