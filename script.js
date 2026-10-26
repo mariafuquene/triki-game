@@ -63,6 +63,7 @@ const btnReiniciar = document.getElementById('btn-reiniciar');
 const selectorTematica = document.getElementById('selector-tematica');
 const ficha1HTML = document.getElementById('ficha-1');
 const ficha2HTML = document.getElementById('ficha-2');
+const fondoDecorativo = document.getElementById('fondo-decorativo');
 
 // ===== Funciones =====
 
@@ -125,7 +126,9 @@ function jugar(evento) {
   // ¿Ganó alguien?
   const combinacion = buscarGanador();
   if (combinacion !== null) {
-    combinacion.forEach(function (i) {
+    // posicion = 0, 1, 2: el CSS la usa para que el brillo vaya casilla tras casilla
+    combinacion.forEach(function (i, posicion) {
+      casillas[i].style.setProperty('--orden', posicion);
       casillas[i].classList.add('ganadora');
     });
     estado.textContent = `¡Ganó Usuario ${turno}! 🎉`;
@@ -184,6 +187,24 @@ function cambiarTematica() {
   nuevaRonda();
 }
 
+// Crea las X y O del fondo, cada una con posición, tamaño y ritmo al azar
+function crearAdornos() {
+  for (let i = 0; i < 14; i++) {
+    const adorno = document.createElement('img');
+    adorno.src = i % 2 === 0 ? 'img/x.png' : 'img/o.png';  // pares X, impares O
+    adorno.alt = '';                                         // decorativa: sin descripción
+    adorno.className = 'adorno';
+
+    adorno.style.left = Math.random() * 100 + '%';
+    adorno.style.top = Math.random() * 100 + '%';
+    adorno.style.width = 40 + Math.random() * 70 + 'px';            // entre 40 y 110 px
+    adorno.style.animationDuration = 6 + Math.random() * 6 + 's';   // entre 6 y 12 s
+    adorno.style.animationDelay = -Math.random() * 12 + 's';        // negativo: ya empezada
+
+    fondoDecorativo.appendChild(adorno);
+  }
+}
+
 // ===== Inicio =====
 casillas.forEach(function (casilla) {
   casilla.addEventListener('click', jugar);
@@ -196,3 +217,4 @@ selectorTematica.addEventListener('change', cambiarTematica);
 // Al cargar la página usamos la temática que muestre el menú
 // (algunos navegadores recuerdan la última opción elegida al recargar)
 cambiarTematica();
+crearAdornos();

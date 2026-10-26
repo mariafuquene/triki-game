@@ -32,4 +32,4 @@ Estoy aprendiendo desarrollo web (HTML, CSS, JS básico) y construyo un triki
 - [x] Paso 5 — Contadores y botones (Nueva ronda / Reiniciar marcador)
 - [x] Paso 6 — Temáticas + fichas como imágenes PNG
 - [x] Paso 7 — Rediseño «Terciopelo nocturno»
-- [ ] Paso 8 — Dinamismo y animaciones
+- [x] Paso 8 — Dinamismo y animaciones

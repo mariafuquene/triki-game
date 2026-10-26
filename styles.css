@@ -42,6 +42,30 @@ body {
   background-attachment: fixed;
 }
 
+/* ===== Fondo animado: X y O que aparecen y desaparecen ===== */
+/* Capa fija que cubre toda la pantalla, detrás del juego (z-index: -1) */
+.fondo-decorativo {
+  position: fixed;
+  inset: 0;               /* top, right, bottom y left en 0: ocupa todo */
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;   /* nunca estorba los clics */
+}
+
+.adorno {
+  position: absolute;
+  translate: -50% -50%;   /* centra cada adorno en su punto left/top */
+  opacity: 0;
+  filter: blur(1px);
+  animation: titilar 9s ease-in-out infinite;
+}
+
+/* 0% y 100% iguales = la animación se repite sin saltos */
+@keyframes titilar {
+  0%, 100% { opacity: 0;    transform: scale(0.8) rotate(-8deg); }
+  50%      { opacity: 0.22; transform: scale(1)   rotate(8deg); }
+}
+
 /* Panel central: el "estuche" con doble filo (plata adentro, oro afuera) */
 .juego {
   width: 100%;
@@ -204,6 +228,8 @@ h1::after {
 
 /* Cada casilla: terciopelo hundido (las sombras "inset" van hacia adentro) */
 .casilla {
+  position: relative;     /* el destello (::before) se ubica respecto a la casilla */
+  overflow: hidden;       /* y no se sale de ella */
   aspect-ratio: 1 / 1;
   display: grid;          /* grid + place-items centra la imagen */
   place-items: center;
@@ -227,6 +253,26 @@ h1::after {
     0 0 16px rgba(51, 85, 255, 0.55);
 }
 
+/* Destello: una franja de luz diagonal que espera escondida a la izquierda */
+.casilla::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.22) 50%, transparent 70%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+/* ...y al pasar el mouse cruza la casilla de izquierda a derecha */
+.tablero:not(.terminado) .casilla:not(.ocupada):hover::before {
+  animation: destello 0.8s ease-out;
+}
+
+/* Solo hay "to": el punto de partida es el transform normal (-120%) */
+@keyframes destello {
+  to { transform: translateX(120%); }
+}
+
 /* Cuando la ronda termina, ninguna casilla parece clicable */
 .tablero.terminado .casilla {
   cursor: default;
@@ -234,7 +280,6 @@ h1::after {
 
 .casilla.ocupada {
   cursor: default;
-  animation: aparecer 0.3s ease-out;
 }
 
 /* Imagen de la ficha en el tablero: ocupa el 80% de la casilla, completa y
@@ -246,26 +291,51 @@ h1::after {
   object-fit: contain;
   pointer-events: none;
   filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.7));
+  animation: colocar 0.5s ease-out;
 }
 
-/* Las 3 casillas ganadoras: filo y luz de oro */
+/* La ficha "cae" al estuche: llega desde arriba, grande y brillante,
+   rebota un poquito (95%) y se asienta con su sombra */
+@keyframes colocar {
+  0% {
+    opacity: 0;
+    transform: translateY(-30%) scale(1.4);
+    filter: drop-shadow(0 20px 12px rgba(0, 0, 0, 0)) brightness(2);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(0) scale(0.95);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.7)) brightness(1);
+  }
+}
+
+/* Las 3 casillas ganadoras: filo de oro y un latido de luz que se repite.
+   --orden (0, 1, 2) lo pone JavaScript: cada casilla empieza 0.15 s después
+   de la anterior, así el brillo "recorre" la línea */
 .casilla.ganadora {
   background: radial-gradient(circle at 50% 35%, #4a3d14 0%, #1f1a08 60%, #0d0b04 100%);
   border-color: var(--oro);
-  box-shadow:
-    inset 0 6px 14px rgba(0, 0, 0, 0.6),
-    0 0 22px rgba(212, 175, 55, 0.7);
-  animation: latido 0.6s ease-in-out 2;
+  animation: celebrar 1.6s ease-in-out calc(var(--orden) * 0.15s) infinite;
 }
 
-@keyframes aparecer {
-  from { transform: scale(0.3); opacity: 0; }
-  to   { transform: scale(1);   opacity: 1; }
+/* Además, una franja de luz dorada cruza cada casilla ganadora */
+.casilla.ganadora::before {
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 230, 150, 0.5) 50%, transparent 70%);
+  animation: destello 1.6s ease-in-out calc(var(--orden) * 0.15s) infinite;
 }
 
-@keyframes latido {
-  0%, 100% { transform: scale(1); }
-  50%      { transform: scale(1.08); }
+@keyframes celebrar {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: inset 0 6px 14px rgba(0, 0, 0, 0.6), 0 0 12px rgba(212, 175, 55, 0.45);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: inset 0 6px 14px rgba(0, 0, 0, 0.6), 0 0 30px rgba(243, 215, 122, 0.95);
+  }
 }
 
 /* ===== Contadores ===== */
@@ -326,4 +396,21 @@ h1::after {
 
 #btn-reiniciar:hover {
   box-shadow: 0 0 18px rgba(192, 198, 212, 0.4);
+}
+
+/* ===== Menos movimiento ===== */
+/* Si la persona activó "reducir animaciones" en su sistema (por mareo o
+   comodidad), las animaciones terminan al instante y el fondo se oculta */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .fondo-decorativo {
+    display: none;
+  }
 }
