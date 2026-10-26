@@ -17,59 +17,70 @@
        aria-hidden="true": es solo decoración, los lectores de pantalla la ignoran -->
   <div class="fondo-decorativo" id="fondo-decorativo" aria-hidden="true"></div>
 
+  <!-- El panel es una cuadrícula (CSS Grid) con 5 zonas:
+       cabecera arriba, usuario 1 | centro | usuario 2, y botones abajo -->
   <main class="juego">
-    <h1>Triki</h1>
 
-    <!-- Selector de temática -->
-    <section class="tematica">
-      <label for="selector-tematica">Temática:</label>
-      <select id="selector-tematica">
-        <option value="clasico">Clásico (X / O)</option>
-        <option value="mascotas">Mascotas (gato / perro)</option>
-        <option value="vehiculos">Vehículos (carro / moto)</option>
-        <option value="dianoche">Día y noche (luna / sol)</option>
-        <option value="deportes">Deportes (fútbol / baloncesto)</option>
-      </select>
-    </section>
+    <!-- Zona "cabecera": título y selector de temática -->
+    <header class="cabecera">
+      <h1>Triki</h1>
 
-    <!-- Jugadores con su ficha y sus rondas ganadas -->
-    <section class="jugadores">
+      <section class="tematica">
+        <label for="selector-tematica">Temática:</label>
+        <select id="selector-tematica">
+          <option value="clasico">Clásico (X / O)</option>
+          <option value="mascotas">Mascotas (gato / perro)</option>
+          <option value="vehiculos">Vehículos (carro / moto)</option>
+          <option value="dianoche">Día y noche (luna / sol)</option>
+          <option value="deportes">Deportes (fútbol / baloncesto)</option>
+        </select>
+      </section>
+    </header>
+
+    <!-- Zona "jugador1": tarjeta de Usuario 1 y sus rondas ganadas debajo -->
+    <section class="lado" id="lado-1">
       <div class="jugador" id="jugador-1">
         <img class="ficha" id="ficha-1" src="img/x.png" alt="X de plata con zafiros">
         <h2>Usuario 1</h2>
-        <p>Rondas ganadas: <span id="victorias-1">0</span></p>
       </div>
+      <p class="rondas">Rondas ganadas: <span id="victorias-1">0</span></p>
+    </section>
 
+    <!-- Zona "centro": turno, tablero y contadores -->
+    <section class="centro">
+      <!-- Mensaje de estado: de quién es el turno, quién ganó, etc. -->
+      <p class="estado" id="estado">Turno de Usuario 1</p>
+
+      <!-- Tablero de 3x3: nueve casillas -->
+      <section class="tablero" id="tablero">
+        <button class="casilla" data-indice="0"></button>
+        <button class="casilla" data-indice="1"></button>
+        <button class="casilla" data-indice="2"></button>
+        <button class="casilla" data-indice="3"></button>
+        <button class="casilla" data-indice="4"></button>
+        <button class="casilla" data-indice="5"></button>
+        <button class="casilla" data-indice="6"></button>
+        <button class="casilla" data-indice="7"></button>
+        <button class="casilla" data-indice="8"></button>
+      </section>
+
+      <!-- Contadores generales -->
+      <section class="contadores">
+        <p>Empates: <span id="empates">0</span></p>
+        <p>Total de juegos: <span id="total-juegos">0</span></p>
+      </section>
+    </section>
+
+    <!-- Zona "jugador2": tarjeta de Usuario 2 y sus rondas ganadas debajo -->
+    <section class="lado" id="lado-2">
       <div class="jugador" id="jugador-2">
         <img class="ficha" id="ficha-2" src="img/o.png" alt="O de oro con zafiros">
         <h2>Usuario 2</h2>
-        <p>Rondas ganadas: <span id="victorias-2">0</span></p>
       </div>
+      <p class="rondas">Rondas ganadas: <span id="victorias-2">0</span></p>
     </section>
 
-    <!-- Mensaje de estado: de quién es el turno, quién ganó, etc. -->
-    <p class="estado" id="estado">Turno de Usuario 1</p>
-
-    <!-- Tablero de 3x3: nueve casillas -->
-    <section class="tablero" id="tablero">
-      <button class="casilla" data-indice="0"></button>
-      <button class="casilla" data-indice="1"></button>
-      <button class="casilla" data-indice="2"></button>
-      <button class="casilla" data-indice="3"></button>
-      <button class="casilla" data-indice="4"></button>
-      <button class="casilla" data-indice="5"></button>
-      <button class="casilla" data-indice="6"></button>
-      <button class="casilla" data-indice="7"></button>
-      <button class="casilla" data-indice="8"></button>
-    </section>
-
-    <!-- Contadores generales -->
-    <section class="contadores">
-      <p>Empates: <span id="empates">0</span></p>
-      <p>Total de juegos: <span id="total-juegos">0</span></p>
-    </section>
-
-    <!-- Botones de control -->
+    <!-- Zona "botones": botones de control -->
     <section class="botones">
       <button id="btn-nueva-ronda">Nueva ronda</button>
       <button id="btn-reiniciar">Reiniciar marcador</button>

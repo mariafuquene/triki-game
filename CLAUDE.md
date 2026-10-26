@@ -36,5 +36,5 @@ Estoy aprendiendo desarrollo web (HTML, CSS, JS básico) y construyo un triki
 - [x] Paso 6 — Temáticas + fichas como imágenes PNG
 - [x] Paso 7 — Rediseño «Terciopelo nocturno»
 - [x] Paso 8 — Dinamismo y animaciones
-- [ ] Paso 9 — Distribución en 3 columnas (CSS Grid)
+- [x] Paso 9 — Distribución en 3 columnas (CSS Grid)
 - [ ] Paso 10 — Corona al ganar

@@ -30,7 +30,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 32px 16px;
+  padding: 16px;
 
   /* Fondo de estuche: una luz azul arriba y un brillo zafiro abajo,
      sobre un degradado de azul noche a casi negro */
@@ -69,12 +69,23 @@ body {
 /* Panel central: el "estuche" con doble filo (plata adentro, oro afuera) */
 .juego {
   width: 100%;
-  max-width: 440px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  padding: 32px 22px;
+  max-width: 980px;
+
+  /* ===== La cuadrícula: 3 columnas y 3 filas ===== */
+  display: grid;
+  /* Columnas: los lados reparten el espacio sobrante (1fr cada uno) y la
+     del centro mide lo que necesite el tablero (auto) */
+  grid-template-columns: 1fr auto 1fr;
+  /* El "dibujo" del boceto: cada palabra es una zona; si se repite,
+     la zona ocupa varias columnas */
+  grid-template-areas:
+    "cabecera  cabecera  cabecera"
+    "jugador1  centro    jugador2"
+    "botones   botones   botones";
+  justify-items: center;  /* centra cada zona en su celda (horizontal) */
+  align-items: center;    /* y en vertical */
+  gap: 14px 32px;         /* espacio entre filas y entre columnas */
+  padding: 20px 28px;
   background: linear-gradient(160deg, rgba(22, 30, 86, 0.9), rgba(6, 8, 26, 0.95));
   border: 1px solid var(--filo);
   border-radius: 20px;
@@ -85,10 +96,26 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.08);    /* reflejo en el borde de arriba */
 }
 
+/* ===== Cada zona va a su lugar de la cuadrícula con grid-area ===== */
+.cabecera { grid-area: cabecera; }
+#lado-1   { grid-area: jugador1; }
+.centro   { grid-area: centro; }
+#lado-2   { grid-area: jugador2; }
+.botones  { grid-area: botones; }
+
+/* Por dentro, cabecera y centro apilan sus piezas en columna (flexbox) */
+.cabecera,
+.centro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
 /* Título: letras de plata pulida */
 h1 {
   font-family: var(--fuente-titulos);
-  font-size: 2.6rem;
+  font-size: 2.3rem;
   font-weight: 700;
   letter-spacing: 0.3em;
   padding-left: 0.3em;   /* compensa el espacio que queda después de la última letra */
@@ -141,41 +168,46 @@ h1::after {
   background: var(--terciopelo);
 }
 
-/* ===== Jugadores ===== */
-.jugadores {
+/* ===== Jugadores (columnas de los lados) ===== */
+/* Cada lado: la tarjeta y debajo la placa de rondas ganadas */
+.lado {
   width: 100%;
+  max-width: 210px;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 12px;
 }
 
-/* Cada tarjeta guarda "su metal" en variables propias */
-#jugador-1 {
+/* Cada lado guarda "su metal" en variables propias
+   (las heredan la tarjeta y la placa de rondas) */
+#lado-1 {
   --metal: var(--plata);
   --brillo: rgba(192, 198, 212, 0.45);
 }
 
-#jugador-2 {
+#lado-2 {
   --metal: var(--oro);
   --brillo: rgba(212, 175, 55, 0.45);
 }
 
 .jugador {
-  flex: 1;
+  width: 100%;
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.25));
   border: 1px solid var(--filo);
   border-radius: var(--radio);
-  padding: 14px 10px;
+  padding: 18px 10px 14px;
   text-align: center;
   transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
 }
 
-/* Imagen de la ficha en la tarjeta: caja fija de 84x56 (más ancha, para que
-   el carro y la moto no se vean diminutos) y la imagen se ajusta adentro
-   completa, sin deformarse */
+/* Imagen de la ficha en la tarjeta: caja fija de 120x80 (más ancha que alta,
+   para que el carro y la moto no se vean diminutos) y la imagen se ajusta
+   adentro completa, sin deformarse */
 .jugador .ficha {
   display: block;
-  width: 84px;
-  height: 56px;
+  width: 120px;
+  height: 80px;
   margin: 0 auto;
   object-fit: contain;
   filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 0.6));
@@ -183,15 +215,26 @@ h1::after {
 
 .jugador h2 {
   font-family: var(--fuente-titulos);
-  font-size: 1rem;
+  font-size: 1.1rem;
   letter-spacing: 0.1em;
   color: var(--metal);
-  margin: 6px 0 2px;
+  margin-top: 8px;
 }
 
-.jugador p {
+/* Placa de rondas ganadas, debajo de la tarjeta */
+.rondas {
   font-size: 0.85rem;
   color: var(--suave);
+  padding: 6px 16px;
+  border: 1px solid var(--filo);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.rondas span {
+  font-family: var(--fuente-titulos);
+  font-weight: 700;
+  color: var(--metal);
 }
 
 /* El jugador que tiene el turno brilla con su metal */
@@ -216,7 +259,10 @@ h1::after {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-  width: min(100%, 340px);
+  /* Tamaño según el ALTO de la pantalla, para que todo quepa sin scroll:
+     100vh = alto completo de la ventana, menos ~350px que ocupan el título,
+     los textos y los botones. clamp(mínimo, ideal, máximo) */
+  width: clamp(230px, calc(100vh - 350px), 400px);
   padding: 12px;
   background: linear-gradient(145deg, #1b2150, #070914);
   border: 1px solid var(--filo);
@@ -396,6 +442,40 @@ h1::after {
 
 #btn-reiniciar:hover {
   box-shadow: 0 0 18px rgba(192, 198, 212, 0.4);
+}
+
+/* ===== Celular: una sola columna ===== */
+/* Si la pantalla mide 720px de ancho o menos, se cambia el "dibujo"
+   de la cuadrícula: una columna y cada zona en su propia fila */
+@media (max-width: 720px) {
+  .juego {
+    /* minmax(0, 1fr): la columna puede encogerse aunque su contenido
+       sea ancho (con solo 1fr no baja del ancho del contenido) */
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "cabecera"
+      "jugador1"
+      "jugador2"
+      "centro"
+      "botones";
+    padding: 20px 16px;
+  }
+
+  /* La fila "Temática + menú" baja el menú a otra línea si no cabe */
+  .tematica {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* En el celular sí se puede hacer scroll, así que el tablero
+     se mide por el ancho y no por el alto */
+  .centro {
+    width: 100%;
+  }
+
+  .tablero {
+    width: min(100%, 340px);
+  }
 }
 
 /* ===== Menos movimiento ===== */
