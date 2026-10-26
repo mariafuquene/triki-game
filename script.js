@@ -1,10 +1,31 @@
 // ===== Estado del juego =====
-// Ficha de cada usuario (por ahora, solo la temática clásica):
+// Las 5 temáticas. Cada una tiene la ficha del Usuario 1 y la del Usuario 2:
 // src = ruta de la imagen, alt = texto que la describe
-const fichas = {
-  1: { src: 'img/x.png', alt: 'X de plata con zafiros' },
-  2: { src: 'img/o.png', alt: 'O de oro con zafiros' }
+const tematicas = {
+  clasico: {
+    1: { src: 'img/x.png', alt: 'X de plata con zafiros' },
+    2: { src: 'img/o.png', alt: 'O de oro con zafiros' }
+  },
+  mascotas: {
+    1: { src: 'img/gato.png', alt: 'Gato de plata con zafiros' },
+    2: { src: 'img/perro.png', alt: 'Perro de oro con zafiros' }
+  },
+  vehiculos: {
+    1: { src: 'img/carro.png', alt: 'Carro de plata con zafiros' },
+    2: { src: 'img/moto.png', alt: 'Moto de oro con zafiros' }
+  },
+  dianoche: {
+    1: { src: 'img/luna.png', alt: 'Luna de plata con zafiros' },
+    2: { src: 'img/sol.png', alt: 'Sol de oro con zafiros' }
+  },
+  deportes: {
+    1: { src: 'img/futbol.png', alt: 'Balón de fútbol de plata con zafiros' },
+    2: { src: 'img/basketball.png', alt: 'Balón de baloncesto de oro con zafiros' }
+  }
 };
+
+// Fichas de la temática elegida (empieza en clásico)
+let fichas = tematicas.clasico;
 
 // Qué hay en cada casilla: null = vacía, 1 = Usuario 1, 2 = Usuario 2
 let tablero = [null, null, null, null, null, null, null, null, null];
@@ -39,6 +60,9 @@ const empatesHTML = document.getElementById('empates');
 const totalJuegosHTML = document.getElementById('total-juegos');
 const btnNuevaRonda = document.getElementById('btn-nueva-ronda');
 const btnReiniciar = document.getElementById('btn-reiniciar');
+const selectorTematica = document.getElementById('selector-tematica');
+const ficha1HTML = document.getElementById('ficha-1');
+const ficha2HTML = document.getElementById('ficha-2');
 
 // ===== Funciones =====
 
@@ -147,6 +171,19 @@ function reiniciarMarcador() {
   nuevaRonda();
 }
 
+// Usa las fichas de la temática elegida en el menú y empieza una ronda nueva
+// (el marcador NO se toca)
+function cambiarTematica() {
+  fichas = tematicas[selectorTematica.value];
+
+  ficha1HTML.src = fichas[1].src;
+  ficha1HTML.alt = fichas[1].alt;
+  ficha2HTML.src = fichas[2].src;
+  ficha2HTML.alt = fichas[2].alt;
+
+  nuevaRonda();
+}
+
 // ===== Inicio =====
 casillas.forEach(function (casilla) {
   casilla.addEventListener('click', jugar);
@@ -154,5 +191,8 @@ casillas.forEach(function (casilla) {
 
 btnNuevaRonda.addEventListener('click', nuevaRonda);
 btnReiniciar.addEventListener('click', reiniciarMarcador);
+selectorTematica.addEventListener('change', cambiarTematica);
 
-actualizarTurno();
+// Al cargar la página usamos la temática que muestre el menú
+// (algunos navegadores recuerdan la última opción elegida al recargar)
+cambiarTematica();

@@ -42,7 +42,7 @@
 | Clásico      | `img/x.png`        | `img/o.png`           |
 | Mascotas     | `img/gato.png`     | `img/perro.png`       |
 | Vehículos    | `img/carro.png`    | `img/moto.png`        |
-| Día y noche  | `img/sol.png`      | `img/luna.png`        |
+| Día y noche  | `img/luna.png`     | `img/sol.png`         |
 | Deportes     | `img/futbol.png`   | `img/basketball.png`  |
 
 - Cambiar de temática **no** borra los contadores.

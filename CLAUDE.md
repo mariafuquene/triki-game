@@ -18,8 +18,11 @@ Estoy aprendiendo desarrollo web (HTML, CSS, JS básico) y construyo un triki
 3. Lógica básica en `script.js` (turnos, poner fichas).
 4. Detectar ganador/empate y resaltar casillas ganadoras.
 5. Contadores y botones (Nueva ronda / Reiniciar marcador).
-6. Temáticas (cambiar fichas sin borrar contadores) + fichas como imágenes 3D
-   (Fluent Emoji 3D) en `img/`.
+6. Temáticas (cambiar fichas sin borrar contadores) + fichas como imágenes PNG
+   de joyería (plata/oro con zafiros) en `img/`.
+7. Rediseño «Terciopelo nocturno»: colores, tipografía (Cinzel + Lato) y tablero.
+8. Dinamismo: X y O en el fondo, brillo al pasar el mouse, animación al poner
+   ficha y celebración de la línea ganadora (`@keyframes`).
 
 ## Progreso
 - [x] Paso 1 — Estructura HTML (commit 4816f98)
@@ -27,4 +30,6 @@ Estoy aprendiendo desarrollo web (HTML, CSS, JS básico) y construyo un triki
 - [x] Paso 3 — Lógica básica JS (turnos, poner fichas)
 - [x] Paso 4 — Detectar ganador/empate y resaltar casillas ganadoras + estilo gamer
 - [x] Paso 5 — Contadores y botones (Nueva ronda / Reiniciar marcador)
-- [ ] Paso 6 — Temáticas + fichas como imágenes 3D
+- [x] Paso 6 — Temáticas + fichas como imágenes PNG
+- [ ] Paso 7 — Rediseño «Terciopelo nocturno»
+- [ ] Paso 8 — Dinamismo y animaciones
