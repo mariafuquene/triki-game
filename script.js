@@ -1,6 +1,10 @@
 // ===== Estado del juego =====
-// Ficha de cada usuario (por ahora, solo la temática clásica)
-const fichas = { 1: '❌', 2: '⭕' };
+// Ficha de cada usuario (por ahora, solo la temática clásica):
+// src = ruta de la imagen, alt = texto que la describe
+const fichas = {
+  1: { src: 'img/x.png', alt: 'X de plata con zafiros' },
+  2: { src: 'img/o.png', alt: 'O de oro con zafiros' }
+};
 
 // Qué hay en cada casilla: null = vacía, 1 = Usuario 1, 2 = Usuario 2
 let tablero = [null, null, null, null, null, null, null, null, null];
@@ -76,7 +80,8 @@ function terminarJuego() {
 
 // Se ejecuta cada vez que se hace clic en una casilla
 function jugar(evento) {
-  const casilla = evento.target;
+  // currentTarget = el botón que tiene el "escuchador" (no la imagen de adentro)
+  const casilla = evento.currentTarget;
   const indice = Number(casilla.dataset.indice);
 
   // Si la ronda terminó o la casilla ya tiene ficha, no hacemos nada
@@ -84,9 +89,13 @@ function jugar(evento) {
     return;
   }
 
-  // Guardamos la jugada y la mostramos
+  // Guardamos la jugada y la mostramos creando una imagen <img> dentro de la casilla
   tablero[indice] = turno;
-  casilla.textContent = fichas[turno];
+  const imagen = document.createElement('img');
+  imagen.src = fichas[turno].src;
+  imagen.alt = fichas[turno].alt;
+  imagen.className = 'ficha';
+  casilla.appendChild(imagen);
   casilla.classList.add('ocupada');
 
   // ¿Ganó alguien?

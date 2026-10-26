@@ -112,8 +112,14 @@ h1 {
   transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
 }
 
+/* Imagen de la ficha en la tarjeta: caja fija de 56x56 y la imagen
+   se ajusta adentro completa, sin deformarse */
 .jugador .ficha {
-  font-size: 2rem;
+  display: block;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto;
+  object-fit: contain;
 }
 
 .jugador h2 {
@@ -159,7 +165,8 @@ h1 {
 
 .casilla {
   aspect-ratio: 1 / 1;
-  font-size: 2.8rem;
+  display: grid;          /* grid + place-items centra la imagen */
+  place-items: center;
   color: var(--texto);
   background: var(--casilla);
   border: 2px solid var(--borde);
@@ -183,6 +190,15 @@ h1 {
 .casilla.ocupada {
   cursor: default;
   animation: aparecer 0.3s ease-out;
+}
+
+/* Imagen de la ficha en el tablero: ocupa el 80% de la casilla, completa y
+   sin deformarse. pointer-events: none hace que el clic "atraviese" la imagen */
+.casilla .ficha {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  pointer-events: none;
 }
 
 /* Las 3 casillas ganadoras */
