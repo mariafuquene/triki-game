@@ -41,6 +41,9 @@ let victorias = { 1: 0, 2: 0 };
 let empates = 0;
 let totalJuegos = 0;
 
+// "Recordatorio" pendiente para quitar la corona (lo devuelve setTimeout)
+let temporizadorCorona = null;
+
 // Las 8 formas de hacer 3 en línea (posiciones del tablero)
 const combinacionesGanadoras = [
   [0, 1, 2], [3, 4, 5], [6, 7, 8], // filas
@@ -93,6 +96,28 @@ function buscarGanador() {
   return null;
 }
 
+// Muestra la corona sobre la tarjeta del ganador durante 2,6 segundos
+function mostrarCorona(usuario) {
+  const tarjeta = usuario === 1 ? jugador1 : jugador2;
+
+  // Si había una corona en camino, la cancelamos para empezar de cero
+  clearTimeout(temporizadorCorona);
+  jugador1.classList.remove('coronado');
+  jugador2.classList.remove('coronado');
+
+  // Truco para repetir la animación: leer offsetWidth obliga al navegador a
+  // "notar" que la clase se quitó antes de volver a ponerla
+  void tarjeta.offsetWidth;
+
+  // Poner la clase dispara la animación del CSS...
+  tarjeta.classList.add('coronado');
+
+  // ...y 2600 ms después (lo que dura la animación) la quitamos
+  temporizadorCorona = setTimeout(function () {
+    tarjeta.classList.remove('coronado');
+  }, 2600);
+}
+
 // Termina la ronda: bloquea el tablero, quita el resaltado de turno y actualiza el marcador
 function terminarJuego() {
   juegoTerminado = true;
@@ -133,6 +158,7 @@ function jugar(evento) {
     });
     estado.textContent = `¡Ganó Usuario ${turno}! 🎉`;
     victorias[turno]++;
+    mostrarCorona(turno);
     terminarJuego();
     return;
   }

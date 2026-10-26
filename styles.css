@@ -192,6 +192,7 @@ h1::after {
 }
 
 .jugador {
+  position: relative;   /* la corona (absolute) se ubica respecto a la tarjeta */
   width: 100%;
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.25));
   border: 1px solid var(--filo);
@@ -219,6 +220,61 @@ h1::after {
   letter-spacing: 0.1em;
   color: var(--metal);
   margin-top: 8px;
+}
+
+/* ===== Corona del ganador ===== */
+/* position: absolute la saca del flujo: flota sobre la tarjeta sin empujar
+   nada. top negativo = sobresale por encima del borde de la tarjeta */
+.corona {
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  translate: -50% 0;    /* centrada: se corre a la izquierda la mitad de su ancho */
+  width: 100px;
+  z-index: 2;           /* por encima de lo que haya cerca */
+  opacity: 0;           /* invisible mientras nadie gane */
+  pointer-events: none;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 0 rgba(243, 215, 122, 0)) brightness(1);
+}
+
+/* JavaScript pone la clase "coronado" en la tarjeta del ganador:
+   eso dispara la animación. forwards = al terminar se queda como en el 100% */
+.jugador.coronado .corona {
+  animation: coronar 2.6s ease-in-out forwards;
+}
+
+/* Mientras tiene la corona, la tarjeta brilla en oro */
+.jugador.coronado {
+  border-color: var(--oro);
+  box-shadow: 0 0 28px rgba(212, 175, 55, 0.55);
+}
+
+/* Entrada (0–28%): baja girando y rebota. Pausa con destello (28–75%).
+   Salida (75–100%): sube y se desvanece */
+@keyframes coronar {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px) rotate(-15deg) scale(0.6);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(4px) rotate(4deg) scale(1.05);
+  }
+  28% {
+    transform: translateY(0) rotate(0) scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 14px rgba(243, 215, 122, 0.9)) brightness(1.25);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 0 rgba(243, 215, 122, 0)) brightness(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.8);
+  }
 }
 
 /* Placa de rondas ganadas, debajo de la tarjeta */
@@ -492,5 +548,11 @@ h1::after {
 
   .fondo-decorativo {
     display: none;
+  }
+
+  /* La corona aparece quieta (sin animación) mientras dura la clase */
+  .jugador.coronado .corona {
+    animation: none;
+    opacity: 1;
   }
 }
